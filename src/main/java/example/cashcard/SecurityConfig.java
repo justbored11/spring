@@ -16,12 +16,19 @@ import org.springframework.security.web.SecurityFilterChain;
 class SecurityConfig {
 
     @Bean
-   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-       return http.build();
-   }
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/cashcards/**")
+                        .authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable());
 
-   @Bean
-   PasswordEncoder passwordEncoder() {
-       return new BCryptPasswordEncoder();
-   }
+        return http.build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

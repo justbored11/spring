@@ -1,5 +1,6 @@
 package example.cashcard;
 
+import java.security.Principal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,10 @@ class CashCardController {
     }
 
     @GetMapping("/{requestedId}")
-    private ResponseEntity<CashCard> findById(@PathVariable Long requestedId) {
-        Optional<CashCard> cashCardOptional = cashCardRepository.findById(requestedId);
+    private ResponseEntity<CashCard> findById(@PathVariable Long requestedId, Principal principal) {
+        Optional<CashCard> cashCardOptional = Optional.ofNullable(cashCardRepository.findByIdAndOwner(requestedId,principal.getName()));
+       
+      
         if (cashCardOptional.isPresent()) {
             return ResponseEntity.ok(cashCardOptional.get());
         } else {
@@ -42,8 +45,8 @@ class CashCardController {
     }
 
     @GetMapping
-    private ResponseEntity<List<CashCard>> findAll(Pageable pageable) {
-        Page<CashCard> page = cashCardRepository.findAll(
+    private ResponseEntity<List<CashCard>> findAll(Pageable pageable, Principal principal) {
+        Page<CashCard> page = cashCardRepository.findByOwner(principal.getName(),
                 PageRequest.of(
                         pageable.getPageNumber(),
                         pageable.getPageSize(),

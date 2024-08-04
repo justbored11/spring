@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+
 import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,6 +22,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CashCardApplicationTests {
     @Autowired
     TestRestTemplate restTemplate;
+
+    @Test
+    void shouldUpdateAnExistingCashCard(){
+        CashCard cashCardUpdate = new CashCard(null, 19.99, null);
+
+
+        HttpEntity<CashCard> request = new HttpEntity<>(cashCardUpdate);        
+
+        ResponseEntity<Void> response = restTemplate.withBasicAuth("sarah1", "1bc123")
+        .exchange("/cashcards/99", HttpMethod.PUT, request,Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+
+    }
 
     @Test
     void shouldReturnACashCardWhenDataIsSaved() {

@@ -48,9 +48,9 @@ public class CashCardController {
 
     @GetMapping
    
-    public ResponseEntity<Iterable<CashCard>> findAll(@CurrentSecurityContext(expression = "authentication") Authentication authentication) {
+    public ResponseEntity<Iterable<CashCard>> findAll(@CurrentSecurityContext(expression = "authentication.name") String owner) {
 
-        var result =this.cashCards.findByOwner(authentication.getName());
+        var result =this.cashCards.findByOwner(owner);
         return ResponseEntity.ok(result);
     }
 }

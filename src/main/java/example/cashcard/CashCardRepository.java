@@ -1,11 +1,15 @@
 package example.cashcard;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
-interface CashCardRepository extends CrudRepository<CashCard, Long>, PagingAndSortingRepository<CashCard, Long> {
-    CashCard findByIdAndOwner(Long id, String owner);
-    Page<CashCard> findByOwner(String owner, PageRequest pageRequest);
+/**
+ * The cash card repository.
+ *
+ * <p>Spring Data JDBC provides the implementation for this interface
+ * at runtime.
+ *
+ * @author Felipe Gutierrez
+ * @author Josh Cummings
+ */
+public interface CashCardRepository extends CrudRepository<CashCard, Long> {
 }
